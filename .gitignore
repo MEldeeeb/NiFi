@@ -1,0 +1,6 @@
+# Ignore Postgres data
+nifi_in_action/postgres_data/
+nifi-kafka-pg/postgres_data/
+
+# Ignore MongoDB data
+nifi-kafka-pg/mongo_data/

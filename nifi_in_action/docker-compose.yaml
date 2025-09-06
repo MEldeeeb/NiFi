@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: nifi_user
+      POSTGRES_PASSWORD: nifi_pass
+      POSTGRES_DB: nifi_db
+    ports:
+      - "9999:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  nifi:
+    image: apache/nifi:1.27.0
+    container_name: nifi
+    restart: always
+    environment:
+      NIFI_WEB_HTTP_PORT: 5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - postgres
+    volumes:
+      - nifi_conf:/opt/nifi/nifi-current/conf    # Configs (editable)
+      - ./nifi_data:/opt/nifi/nifi-current/data    # Data (repositories, state, etc.)
+      - nifi_logs:/opt/nifi/nifi-current/logs    # Logs
+
+# No named volumes here, all data stays in local project folder
+volumes:
+  nifi_conf:
+  nifi_logs:
